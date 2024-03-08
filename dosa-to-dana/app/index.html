@@ -1,0 +1,66 @@
+<!-- index.html -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dosa to Dana</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1>Dosa To Dana</h1>
+    <h2>Convert jumlah dosa menjadi saldo dana</h2>
+
+    <label for="inputPhoneNumber">Nomor Dana:</label>
+    <input
+      type="tel"
+      id="inputPhoneNumber"
+      placeholder="Contoh: 08xxxxxxxxxx"
+    />
+    <button onclick="confirmPhoneNumber()">ok</button>
+    <p id="phoneConfirmation"></p>
+
+    <h4>Berapa kali dosa yang anda perbuat</h4>
+    <label for="inputNumber">Jumlah Dosa:</label>
+    <input type="number" id="inputNumber" placeholder="Masukkan angka" />
+    <button onclick="calculate()">Convert</button>
+    <p id="result"></p>
+
+    <script>
+      async function calculate() {
+        const inputNumber = document.getElementById("inputNumber").value;
+
+        try {
+          const response = await fetch(`/calculate?number=${inputNumber}`);
+          const result = await response.text();
+          document.getElementById("result").innerText =
+            `Terkirim ✔️
+            Total saldo yang anda peroleh: Rp${result}`;
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+
+      async function confirmPhoneNumber() {
+        const inputPhoneNumber =
+          document.getElementById("inputPhoneNumber").value;
+
+        try {
+          const response = await fetch(
+            `/confirm-phone?number=${inputPhoneNumber}`,
+          );
+          const confirmationMessage = await response.text();
+          document.getElementById("phoneConfirmation").innerText =
+            confirmationMessage;
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+    </script>
+  </body>
+</html>
